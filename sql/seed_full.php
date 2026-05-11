@@ -41,6 +41,7 @@ if ($existing > 0) {
 }
 
 // ── Helpers ────────────────────────────────────────────────────────────
+$SUPER_PASSWORD = password_hash('Admin@123', PASSWORD_BCRYPT);
 $PASSWORD = password_hash('Test@1234', PASSWORD_BCRYPT);
 
 $M_FIRST  = ['Juma','Hamisi','Salum','Abdallah','Rajabu','Said','Ramadhani','Kassim','Omari','Mbaraka','Yusuph','Idd','Saidi','Hamza','Shabani','Musa','Hussein','Bakari','Jafari','Masoud'];
@@ -190,7 +191,19 @@ try {
         $sub_groups[] = array_map(fn($c) => $sub_map[$c], $codes);
     }
 
-    // ── 2. District admin ──────────────────────────────────────────────
+    // ── 2. Super admin ────────────────────────────────────────────────
+    $sa_id = (int)$pdo->query("SELECT id FROM users WHERE username='super' LIMIT 1")->fetchColumn();
+    if (!$sa_id) {
+        $pdo->prepare("INSERT INTO users (school_id,full_name,email,username,password_hash,role,status) VALUES (NULL,'Super Admin','admin@iramba.go.tz','super',?,'super_admin','active') ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id)")
+            ->execute([$SUPER_PASSWORD]);
+        $sa_id = (int)$pdo->lastInsertId();
+        if (!$sa_id) {
+            $sa_id = (int)$pdo->query("SELECT id FROM users WHERE username='super' LIMIT 1")->fetchColumn();
+        }
+        echo "Imetengenezwa: super admin (username=super, pass=Admin@123)\n";
+    }
+
+    // ── 3. District admin ──────────────────────────────────────────────
     $da_id = (int)$pdo->query("SELECT id FROM users WHERE username='district' LIMIT 1")->fetchColumn();
     if (!$da_id) {
         $pdo->prepare("INSERT INTO users (school_id,full_name,email,username,password_hash,role,status) VALUES (NULL,'District Admin Iramba','district@iramba.go.tz','district',?,'district_admin','active') ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id)")
@@ -224,8 +237,6 @@ try {
 
     // ── Prepared statements ────────────────────────────────────────────
     $ins_school  = $pdo->prepare("INSERT IGNORE INTO schools (name,code,level,ward,status) VALUES (?,?,'o_level',?,'active')");
-    $ins_user    = $pdo->prepare("INSERT IGNORE INTO users (school_id,full_name,email,username,password_hash,role,status) VALUES (?,?,?,?,?,'?','active')");
-    // role is a string, use positional properly
     $ins_user = $pdo->prepare(
         "INSERT IGNORE INTO users (school_id,full_name,email,username,password_hash,role,status) VALUES (?,?,?,?,?,?,'active')"
     );
