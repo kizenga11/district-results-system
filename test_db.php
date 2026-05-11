@@ -1,9 +1,13 @@
 <?php
-require_once __DIR__ . '/config/db.php';
 
-$stmt = db()->query("SHOW TABLES");
-$tables = $stmt->fetchAll(PDO::FETCH_COLUMN);
+try {
+    $pdo = new PDO(
+        "mysql:host=mysql.railway.internal;dbname=railway;charset=utf8mb4",
+        "root",
+        "YOUR_PASSWORD_HERE"
+    );
 
-echo "<pre>";
-print_r($tables);
-echo "</pre>";
+    echo "DB CONNECTED OK";
+} catch (Exception $e) {
+    echo "ERROR: " . $e->getMessage();
+}

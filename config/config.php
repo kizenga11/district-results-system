@@ -44,11 +44,6 @@ define('SESSION_LIFETIME', 3600);
 date_default_timezone_set('Africa/Dar_es_Salaam');
 
 // ── Error handling ─────────────────────────────────────────
-if (APP_DEBUG) {
-    ini_set('display_errors', '1');
-    error_reporting(E_ALL);
-} else {
-    ini_set('display_errors', '0');
-    error_reporting(0);
-}
+ini_set('display_errors', '1');
+error_reporting(E_ALL);
 
