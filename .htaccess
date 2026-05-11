@@ -1,0 +1,66 @@
+# ═══════════════════════════════════════════════════════════════
+# Iramba RMS — Apache Security & Performance Configuration
+# ═══════════════════════════════════════════════════════════════
+
+# ── Enable rewrite engine ────────────────────────────────────
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # ── Block sensitive directories ─────────────────────────
+    RewriteRule ^sql/              - [F,L,NC]
+    RewriteRule ^config/           - [F,L,NC]
+    RewriteRule ^includes/         - [F,L,NC]
+    RewriteRule ^assets/\. - [F,L,NC]
+
+    # ── Block sensitive files ───────────────────────────────
+    RewriteRule (^|/)\.env          - [F,L,NC]
+    RewriteRule \.env\.             - [F,L,NC]
+    RewriteRule \.sql$              - [F,L,NC]
+    RewriteRule setup_db\.php$      - [F,L,NC]
+</IfModule>
+
+# ── Deny access to dot-files (like .env, .git) ───────────────
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+
+# ── Block PHP execution in uploads/assets (if any) ───────────
+<IfModule mod_php.c>
+    php_flag display_errors Off
+    php_flag log_errors On
+</IfModule>
+
+# ── Security headers ─────────────────────────────────────────
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "DENY"
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# ── Gzip compression ─────────────────────────────────────────
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css
+    AddOutputFilterByType DEFLATE application/javascript application/json
+    AddOutputFilterByType DEFLATE application/xml application/rss+xml
+    AddOutputFilterByType DEFLATE image/svg+xml font/ttf font/opentype
+</IfModule>
+
+# ── Browser caching ──────────────────────────────────────────
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/gif                 "access plus 1 year"
+    ExpiresByType image/png                 "access plus 1 year"
+    ExpiresByType image/jpeg                "access plus 1 year"
+    ExpiresByType image/svg+xml             "access plus 1 year"
+    ExpiresByType text/css                  "access plus 1 month"
+    ExpiresByType application/javascript    "access plus 1 month"
+    ExpiresByType font/ttf                  "access plus 1 year"
+    ExpiresByType font/opentype             "access plus 1 year"
+</IfModule>
+
+# ── Prevent directory listing ─────────────────────────────────
+Options -Indexes
+
+# ── Default charset ──────────────────────────────────────────
+AddDefaultCharset UTF-8

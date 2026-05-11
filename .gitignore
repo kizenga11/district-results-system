@@ -1,0 +1,27 @@
+# ── Environment ────────────────────────────────────────────────
+.env
+.env.local
+.env.*.local
+
+# ── OS files ───────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# ── IDE / Editor ───────────────────────────────────────────────
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+.php_cs.cache
+.phpunit.result.cache
+
+# ── Logs ───────────────────────────────────────────────────────
+*.log
+error.log
+
+# ── Temp / Cache ───────────────────────────────────────────────
+/tmp/
+/cache/

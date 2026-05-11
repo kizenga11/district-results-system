@@ -1,0 +1,1 @@
+ALTER TABLE marks ADD COLUMN absent TINYINT(1) NOT NULL DEFAULT 0 AFTER practical_mark;
