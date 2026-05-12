@@ -11,6 +11,7 @@
  *   6. Alama za masomo yote, madarasa yote, shule zote
  *
  * Jinsi ya kuendesha:
+ *   php sql/seed_o_level.php
  *   php sql/seed_full.php
  *   AU fungua: http://localhost/iramba-rms/sql/seed_full.php
  *
@@ -181,7 +182,7 @@ try {
     if (count($sub_map) < count($CORE_CODES)) {
         $missing = array_diff($CORE_CODES, array_keys($sub_map));
         echo "KOSA: Masomo hayapo DB (codes: " . implode(',', $missing) . ").\n";
-        echo "Kwanza tekeleza: sql/seed_o_level.sql\n";
+        echo "Kwanza tekeleza: php sql/seed_o_level.php\n";
         exit(1);
     }
     $all_sub_ids = array_values($sub_map);
