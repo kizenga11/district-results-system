@@ -104,9 +104,12 @@ $subjects = db()->query(
 )->fetchAll();
 
 $grouped = ['o_level' => [], 'a_level' => []];
-foreach ($subjects as $s) {
+foreach ($subjects as &$s) {
+    $s['abbr']               = $s['abbr']               ?? '';
+    $s['alevel_subject_type'] = $s['alevel_subject_type'] ?? '';
     $grouped[$s['category']][] = $s;
 }
+unset($s);
 
 $subjects_json = json_encode(array_column($subjects, null, 'id'), JSON_HEX_TAG);
 
