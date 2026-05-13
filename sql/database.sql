@@ -473,8 +473,9 @@ INSERT IGNORE INTO alevel_combination_subjects (combination_id, subject_id)
 SELECT c.id, s.id FROM alevel_combinations c, subjects s
 WHERE c.code='HGE' AND s.code IN ('112','113','151');
 
--- ── 7. Super Admin (password: Admin@123) ───────────────────────────────
+-- ── 7. Super Admin
+-- LOGIN: email=admin@iramba.go.tz  password=Admin@123
 INSERT IGNORE INTO users (school_id, full_name, email, username, password_hash, role, status)
-VALUES (NULL, 'Super Admin', 'admin@iramba.go.tz', 'super',
+VALUES (NULL, 'Super Admin', 'admin@iramba.go.tz', 'super_admin',
         '$2y$10$lMqYAZi07uUboYqWb/.lVOV7y1cV8G1U7pAhU8y7kNzwDygagVXc2',
         'super_admin', 'active');
