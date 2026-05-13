@@ -371,7 +371,7 @@ render_header('Exam Results');
               if (!$m) continue;
               $gc  = grade_cls($m['grade']);
               $sup = ($is_alevel && $sub['is_principal']) ? '<sup>P</sup>' : '';
-              $parts[] = e($sub['abbr']) . $sup . " - <span class=\"rsubj-grade {$gc}\">'". e($m['grade']) ."'</span>";
+              $parts[] = e($sub['abbr'] ?? $sub['code']) . $sup . " - <span class=\"rsubj-grade {$gc}\">'". e($m['grade']) ."'</span>";
           }
           echo implode(' ', $parts);
         ?></td>

@@ -157,7 +157,7 @@ render_header('Subjects');
             <td class="fw-semibold"><?= e($s['name']) ?></td>
             <td class="d-none d-sm-table-cell"><span class="badge bg-light text-dark border"><?= e($s['code']) ?></span></td>
             <td class="d-none d-sm-table-cell">
-              <?= $s['abbr'] ? '<span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25">'.e($s['abbr']).'</span>' : '<span class="text-muted">—</span>' ?>
+              <?= ($s['abbr'] ?? '') !== '' ? '<span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25">'.e($s['abbr']).'</span>' : '<span class="text-muted">—</span>' ?>
             </td>
             <?php if ($cat === 'a_level'): ?>
             <td class="text-center d-none d-sm-table-cell">
