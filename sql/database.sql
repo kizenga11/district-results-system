@@ -300,13 +300,13 @@ CREATE TABLE IF NOT EXISTS reg_sequences (
 -- INDEXES (performance)
 -- ─────────────────────────────────────────────────────────────────────
 
-CREATE INDEX IF NOT EXISTS idx_students_school_level_status   ON students          (school_id, level_id, status);
-CREATE INDEX IF NOT EXISTS idx_marks_exam_subject              ON marks             (exam_id, subject_id);
-CREATE INDEX IF NOT EXISTS idx_marks_student_subject           ON marks             (student_id, subject_id);
-CREATE INDEX IF NOT EXISTS idx_notifications_user_read_created ON notifications     (user_id, is_read, created_at DESC);
-CREATE INDEX IF NOT EXISTS idx_ta_teacher_school               ON teacher_assignments (teacher_id, school_id);
-CREATE INDEX IF NOT EXISTS idx_teacher_topics_assign_status    ON teacher_topics    (teacher_assignment_id, status);
-CREATE INDEX IF NOT EXISTS idx_exams_status_year               ON exams             (status, year DESC);
+CREATE INDEX idx_students_school_level_status   ON students             (school_id, level_id, status);
+CREATE INDEX idx_marks_exam_subject              ON marks                (exam_id, subject_id);
+CREATE INDEX idx_marks_student_subject           ON marks                (student_id, subject_id);
+CREATE INDEX idx_notifications_user_read_created ON notifications        (user_id, is_read, created_at);
+CREATE INDEX idx_ta_teacher_school               ON teacher_assignments  (teacher_id, school_id);
+CREATE INDEX idx_teacher_topics_assign_status    ON teacher_topics       (teacher_assignment_id, status);
+CREATE INDEX idx_exams_status_year               ON exams                (status, year);
 
 SET FOREIGN_KEY_CHECKS = 1;
 

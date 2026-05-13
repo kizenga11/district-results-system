@@ -97,8 +97,8 @@ foreach ($statements as $stmt) {
         $ok++;
     } catch (PDOException $e) {
         $msg = $e->getMessage();
-        // Ignore "already exists" and "Duplicate entry" errors – safe to skip
-        if (str_contains($msg, 'already exists') || str_contains($msg, 'Duplicate entry')) {
+        // Ignore errors that mean the object already exists – safe to skip
+        if (str_contains($msg, 'already exists') || str_contains($msg, 'Duplicate entry') || str_contains($msg, 'Duplicate key name')) {
             $skip++;
         } else {
             echo "  [WARN] " . substr($stmt, 0, 60) . "...\n";
