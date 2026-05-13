@@ -1,10 +1,11 @@
 <?php
 require_once __DIR__ . '/config/config.php';
+require_once __DIR__ . '/config/db.php';
+
 ini_set('display_errors', '1');
 error_reporting(E_ALL);
 
 echo '<pre>';
-// DB check
 try {
     $tables = db()->query("SHOW TABLES")->fetchAll(PDO::FETCH_COLUMN);
     echo "TABLES (" . count($tables) . "):\n" . implode("\n", $tables);
