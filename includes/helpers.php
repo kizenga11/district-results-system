@@ -60,8 +60,43 @@ function flash_get(string $key): ?string
     if (!isset($_SESSION['flash'][$key])) {
         return null;
     }
-
     $msg = (string)$_SESSION['flash'][$key];
     unset($_SESSION['flash'][$key]);
     return $msg;
 }
+
+function flash_success(string $message): void { flash_set('success', $message); }
+function flash_error(string $message): void   { flash_set('error',   $message); }
+function flash_warning(string $message): void { flash_set('warning', $message); }
+function flash_info(string $message): void    { flash_set('info',    $message); }
+
+// ── Global safe error/exception handler ───────────────────────
+function _safe_error_message(Throwable $e): string
+{
+    $map = [
+        'SQLSTATE[23000]' => 'This record conflicts with existing data (duplicate entry).',
+        'SQLSTATE[42S02]' => 'A required database table is missing. Please run the installer.',
+        'SQLSTATE[42000]' => 'A database query error occurred.',
+        'SQLSTATE[08]'    => 'Could not connect to the database. Check your configuration.',
+        'SQLSTATE'        => 'A database error occurred. Please try again.',
+    ];
+    $msg = $e->getMessage();
+    foreach ($map as $needle => $friendly) {
+        if (str_contains($msg, $needle)) return $friendly;
+    }
+    return 'An unexpected error occurred. Please try again or contact the administrator.';
+}
+
+function handle_exception(Throwable $e): void
+{
+    error_log('[' . date('Y-m-d H:i:s') . '] ' . get_class($e) . ': ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine());
+    if (session_status() === PHP_SESSION_ACTIVE) {
+        flash_set('error', _safe_error_message($e));
+    }
+    if (!headers_sent()) {
+        header('Location: ' . ($_SERVER['HTTP_REFERER'] ?? (rtrim(BASE_PATH, '/') . '/dashboard.php')));
+        exit;
+    }
+}
+
+set_exception_handler('handle_exception');
